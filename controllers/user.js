@@ -17,9 +17,9 @@ function isstringinvalid(string){
 
 exports.signup = async (req, res, next) => {
     try{
-      const { name, email, phone, password } = req.body;
+      const { name, email, phoneNumber, password } = req.body;
       console.log('email', email)
-      if(isstringinvalid(name) || isstringinvalid(email) || isstringinvalid(phone) || isstringinvalid(password)){
+      if(isstringinvalid(name) || isstringinvalid(email) || isstringinvalid(phoneNumber) || isstringinvalid(password)){
           return res.status(400).json({err: "Bad parameters . Something is missing"})
       }
       bcrypt.hash(password, saltrounds, async (err, hash) => {
@@ -27,7 +27,7 @@ exports.signup = async (req, res, next) => {
               throw new Error('Error hashing password');
           }
           console.log(err);
-          await User.create({ name, email, phone, password: hash })
+          await User.create({ name, email, phoneNumber, password: hash })
           res.status(201).json({message: 'Successfuly create new user'})
       })
     }

@@ -2,7 +2,7 @@ const socket = io('http://localhost:3000');
 
 
 socket.on('recieve-message', (message) => {
-console.log('>>>>',message)
+console.log('>>>>>>>>>>',message)
 console.log(message.nameAndId.id)
 const userId = message.nameAndId.id
 const name = message.nameAndId.name

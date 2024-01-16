@@ -5,13 +5,13 @@ async function signup(e) {
         console.log(e.target.email.value);
         const userName = e.target.name.value;
         const email = e.target.email.value;
-        const phone = e.target.phone.value;
+        const phoneNumber = e.target.phone.value;
         const password = e.target.password.value;
 
         const signupDetails = {
             name : userName,
             email : email,
-            phone : phone,
+            phoneNumber : phoneNumber,
             password : password
         }
         console.log(signupDetails);
