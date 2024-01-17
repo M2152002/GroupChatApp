@@ -19,4 +19,6 @@ async function login(e) {
         console.log(JSON.stringify(err));
         document.body.innerHTML += `<div style="color:red;">${err.message} <div>`;
     }
+    e.target.email.value = '';
+    e.target.password.value = '';
 } 

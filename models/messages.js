@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 
 const sequelize = require('../util/database');
 
-const Message = sequelize.define('user_messages',{
+Message = sequelize.define('user_messages',{
     id:{
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -12,9 +12,7 @@ const Message = sequelize.define('user_messages',{
     message:{
         type:Sequelize.STRING,
         allowNull:false
-    },
-   
-    
+    },   
 })
 
 module.exports = Message;
