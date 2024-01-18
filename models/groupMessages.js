@@ -12,16 +12,7 @@ const GroupMessages = sequelize.define('group_messages',{
     message:{
         type:Sequelize.STRING,
         allowNull:false
-    },
-    groupGroupId:{
-        type:Sequelize.INTEGER
-    },
-    userListUserId:{
-        type:Sequelize.INTEGER
-    },
-    
-},{
-    timestamps: false,
+    }
 })
 
 module.exports = GroupMessages;
