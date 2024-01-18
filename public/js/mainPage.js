@@ -25,10 +25,10 @@ async function sendMessageToServer() {
 }
 
 async function getAllMessagesFromDB() {
-  const token = localStorage.getItem('token');
-  const userId = localStorage.getItem('id');
-  setInterval( 
-    async() => {
+  setInterval(async() => {
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('id');
+
     if (!token || !userId) {
       console.error('Token or user ID not found in localStorage');
       return;
@@ -47,33 +47,31 @@ async function getAllMessagesFromDB() {
         let message = response.data.allMessage[i].message;
         let id = response.data.allMessage[i].id;
         let name = response.data.allMessage[i].user_detail.name;
+        localStorage.setItem('name', name);
         console.log(name);
 
         messages[id] = message;
-        var isUser = false;
+        const isUser = response.data.allMessage[i].userId == userId;
+        displayMessage(isUser ? "You" : name, message, isUser);
+       }
 
-        if (response.data.allMessage[i].userId == userId) {
-          isUser = true;
-          displayMessage("You", message, isUser);
-        } else {
-          displayMessage(name, message, isUser);
-        }
-      }
 
       localStorage.setItem('chatMessages', JSON.stringify(messages));
     } catch (err) {
       console.error(err);
     }
-   }
-   ,1000);
+   }, 1000);
 }
 
 function getAllMessagesFromLS() {
   const messages = JSON.parse(localStorage.getItem("chatMessages")) || [];
   console.log("messages from LS", messages);
   clearChatMessages();
+  if (messages.length > 10) {
+    messages = messages.slice(messages.length - 10);
+  }
   for (let i = 0; i < messages.length; i++) {
-    let message = messages[i];
+    const message = messages[i];
     displayMessage("You", message, true);
   }
 }
@@ -85,9 +83,9 @@ function clearChatMessages() {
 
 function displayMessage(sender, message, isUser) {
     const chatMessages = document.querySelector(".chat-messages");
-
+    const name = localStorage.getItem('name');
     const messageContainer = document.createElement("div");
-    messageContainer.classList.add("message-container", isUser ? "user" : "bot");
+   messageContainer.classList.add("message-container", isUser ? "user" : name.replace(/\s/g, ''));
 
     const senderDiv = document.createElement("div");
     senderDiv.classList.add("message-sender");
@@ -105,7 +103,7 @@ function displayMessage(sender, message, isUser) {
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-displayMessage("Bot", "Hello! How can I help you today?", false);
+displayMessage( "Hello!", false);
 
 window.addEventListener('DOMContentLoaded', getAllMessagesFromDB);
 async function getAllNewMessagesFromDB() {

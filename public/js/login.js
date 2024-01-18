@@ -9,11 +9,20 @@ async function login(e) {
         }
         // console.log(loginDetails)
         const response = await axios.post('http://localhost:3000/user/login', loginDetails)
-            alert(response.data.message);
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('userID', response.data.userid);
-            localStorage.setItem('userName', response.data.userName);
-            window.location.href ='./mainPage.html';
+        if(response.status === 200){
+            console.log(response.data.user.name);
+            localStorage.setItem('username', response.data.user.name);
+            localStorage.setItem('token',response.data.token);
+            localStorage.setItem('id', response.data.user.id);
+            console.log(response.data.token);
+            alert('Successfully logged in');
+            window.location.href = './mainPage.html';
+          }
+          else if(201){
+            window.alert('invalid password');
+          }else{
+              throw new Error('failed to login');
+          }
     }
     catch(err) {
         console.log(JSON.stringify(err));

@@ -12,7 +12,9 @@ Message = sequelize.define('user_messages',{
     message:{
         type:Sequelize.STRING,
         allowNull:false
-    },   
+    },
+   
+    
 })
 
-module.exports = Message;
+module.exports = Message

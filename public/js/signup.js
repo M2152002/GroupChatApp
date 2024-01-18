@@ -18,14 +18,18 @@ async function signup(e) {
         const response = await axios.post('http://localhost:3000/user/signup', signupDetails)
         if(response.status === 201) { // Created
             alert('Signup successful!');
+            document.getElementById('message').innerText = 'Details are submitted to the database';
+            localStorage.setItem('users', JSON.stringify(response.data.users));
             window.location.href = './login.html';
         }
-        else {
-            alert('Signup failed. User already exists.');
+        else if (response.status === 202) {
+            window.alert("user already exists")
+            document.getElementById('message').innerText = 'User already exists, Please Login';
         }
     }
     catch(err){
-        document.body.innerHTML += `<div style="color:red;">${err} <div>`;
+        document.getElementById('message').innerText = 'Failed to sign up';
+        console.error(err);
     }
     e.target.name.value = '';
     e.target.email.value = '';

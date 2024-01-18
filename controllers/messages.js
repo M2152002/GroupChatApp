@@ -7,6 +7,9 @@ const postMessage = async (req, res, next) => {
   const t = await sequelize.transaction();
   try {
     const { message} = req.body.message;
+    if (typeof message !== 'string') {
+      throw new Error('Invalid message format');
+    }
     console.log('id>>a>>', req.user.id);
     const data = await Message.create({ message: message,userId:req.user.id }, { transaction: t });
     
@@ -16,14 +19,14 @@ const postMessage = async (req, res, next) => {
     console.log(user);
     res.status(200).json({ newMessage: [data], token: generateAccessToken(data.userId, data.message) });
   } catch (err) {
-    await t.rollback();
     console.error('Error posting message:', err);
+    await t.rollback();
     res.status(500).json({ success: false, error: err.message });
   }
 }
 
 function generateAccessToken(id, name) {
-  return jwt.sign({ userId: id, name: name },process.env.SECRET_KEY); 
+  return jwt.sign({ userId: id, name: name },process.env.JWT_SECRET_KEY); 
 }
 
 const getMessage = async (req, res, next) => {
@@ -44,7 +47,7 @@ const getMessage = async (req, res, next) => {
   }
 }
 
- const allMessage = async function (req, res) {
+const allMessage = async function (req, res) {
   console.log("bosy of new messages request", req.params);
   let offsetMessageId = req.params.id;
   try {
