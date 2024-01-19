@@ -12,8 +12,10 @@ async function login(e) {
         if(response.status === 200){
             console.log(response.data.user.name);
             localStorage.setItem('username', response.data.user.name);
+            localStorage.setItem('username', response.data.user.name);
             localStorage.setItem('token',response.data.token);
-            localStorage.setItem('id', response.data.user.id);
+            localStorage.setItem('id',response.data.user.id);
+            console.log(response.data.user.id);
             console.log(response.data.token);
             alert('Successfully logged in');
             window.location.href = './mainPage.html';
