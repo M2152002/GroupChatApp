@@ -12,8 +12,6 @@ const postMessage = async (req, res, next) => {
     }
     console.log('id>>a>>', req.user.id);
     const data = await Message.create({ message: message,userId:req.user.id }, { transaction: t });
-    
-    // console.log('data>>', data);
     await t.commit();
     const user = await User.findByPk(data.userId);
     console.log(user);
@@ -39,7 +37,6 @@ const getMessage = async (req, res, next) => {
         },
       ],
     });
-    // console.log("*******", messages);
     res.status(200).json({ allMessage: messages, success: true });
   } catch (err) {
     console.error('Failed to get messages:', err);
@@ -48,7 +45,6 @@ const getMessage = async (req, res, next) => {
 }
 
 const allMessage = async function (req, res) {
-  // console.log("bosy of new messages request", req.params);
   let offsetMessageId = req.params.id;
   try {
       const newMessages = await Message.findAll({

@@ -28,8 +28,8 @@ async function signup(e) {
         }
     }
     catch(err){
-        document.getElementById('message').innerText = 'Failed to sign up';
-        console.error(err);
+        onsole.log(JSON.stringify(err));
+        document.body.innerHTML += `<div style="color:red;">${err.message} <div>`;
     }
     e.target.name.value = '';
     e.target.email.value = '';

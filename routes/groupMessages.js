@@ -9,4 +9,4 @@ router.post('/addgroupMessage', groupMessageController.addGroupMessages);
 router.get('/fetchgroupMessage', groupMessageController.fetchGroupMessages);
 
 
-module.routes = router;
+module.exports = router;

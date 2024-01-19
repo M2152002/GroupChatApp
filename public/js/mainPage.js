@@ -40,7 +40,6 @@ async function getAllMessagesFromDB() {
       const response = await axios.get('http://localhost:3000/user/getmessages', {
         headers: { Authorization:  token  }, 
       });
-      // console.log('response of all messages in global group', response);
 
       clearChatMessages();
       const messages = {};
@@ -48,17 +47,15 @@ async function getAllMessagesFromDB() {
       for (let i = 0; i < response.data.allMessage.length; i++) {
         let message = response.data.allMessage[i].message;
         let id = response.data.allMessage[i].id;
-        console.log(response.data.allMessage[i].user_detail)
+        // console.log(response.data.allMessage[i].user_detail)
         let name = response.data.allMessage[i].user_detail.name;
         localStorage.setItem('name', name);
-        console.log(name);
+        // console.log(name);
 
         messages[id] = message;
         const isUser = response.data.allMessage[i].userId == userId;
         displayMessage(isUser ? "You" : name, message, isUser);
        }
-
-
       localStorage.setItem('chatMessages', JSON.stringify(messages));
     } catch (err) {
       console.error(err);
@@ -87,7 +84,7 @@ function clearChatMessages() {
 function displayMessage(sender, message, isUser) {
     const chatMessages = document.querySelector(".chat-messages");
     const messageContainer = document.createElement("div");
-   messageContainer.classList.add("message-container", isUser ? "user" :"You");
+    messageContainer.classList.add("message-container", isUser ? "user" : "You");
 
     const senderDiv = document.createElement("div");
     senderDiv.classList.add("message-sender");
@@ -136,22 +133,22 @@ async function getAllNewMessagesFromDB() {
 // group creation
 document.getElementById('groupCreateFrom').addEventListener('submit', createGroup);
 async function createGroup(e) {
-    e.preventDefault();
-    const userId = localStorage.getItem('id');
-    const groupName = document.getElementById('group-name-input').value;
-    console.log('group button working', userId);
-    console.log('groupName', groupName);
-    const group = {
-      groupName: groupName,
-      userId : userId
-    }
-    try {
-        const response = await axios.post('http://localhost:3000/group/createGroup', group);
-        console.log("group id after group creation", response);
-        displayGroup(response.result)
-        } catch (error) {
-            console.log(error);
-        }
+  e.preventDefault();
+  const userId = localStorage.getItem('id');
+  const groupName = document.getElementById('group-name-input').value;
+  console.log('group button working', userId);
+  console.log('groupName', groupName);
+  const group = {
+    groupName: groupName,
+    userId : userId
+  }
+  try {
+    const response = await axios.post('http://localhost:3000/group/createGroup',group);
+    console.log("group id after group creation", response);
+    displayGroup(response.result)
+      } catch (error) {
+          console.log(error);
+      }
 }
 
 window.addEventListener('DOMContentLoaded', getAllGroupsOfUserFromDB);
@@ -160,7 +157,7 @@ async function getAllGroupsOfUserFromDB() {
       const userId = localStorage.getItem('id');
       console.log(userId);
       const response = await axios.get(`http://localhost:3000/group/fetchGroups/${userId}`);
-      console.log("all groups of user",response.data);
+      console.log("all groups of user", response.data);
       for (let i = 0; i < response.data.length; i++) {
           const data = response.data[i]
           console.log("///////////",data.group.group_name)
@@ -174,6 +171,10 @@ async function getAllGroupsOfUserFromDB() {
 
 
 function displayGroup(data) {
+  if (!data || !data.group || !data.group.group_name || !data.groupGroupId) {
+    console.error('Invalid data format for group:', data);
+    return;
+  }
   console.log(data);
   let groupName = data.group.group_name;
   console.log(data.group);
